@@ -1,2 +1,3 @@
-# todo
-Todo list
+# Todo
+
+Todo list that is protected with a password.
