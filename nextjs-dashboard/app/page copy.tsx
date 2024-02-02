@@ -5,8 +5,6 @@ import styles from '@/app/ui/home.module.css';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Metadata } from 'next';
-import { CreateListInput } from './CreateListInput';
-import cn from 'clsx';
 
 export const metadata: Metadata = {
   title: 'Acme Homepage',
@@ -14,38 +12,22 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <main className={cn('flex min-h-screen flex-col', 'p-6')}>
-      <div
-        className={cn(
-          'flex h-20 shrink-0 items-end',
-          'p-4 md:h-20',
-          'rounded-lg bg-blue-500',
-        )}
-      >
-        <h1 className="text-xl text-white antialiased md:text-3xl">Todo</h1>
+    <main className="flex min-h-screen flex-col p-6">
+      <div className="flex h-20 shrink-0 items-end rounded-lg bg-blue-500 p-4 md:h-52">
+        <AcmeLogo />
       </div>
       <div className="mt-4 flex grow flex-col gap-4 md:flex-row">
-        <div
-          className={cn(
-            'flex flex-col justify-between',
-            'md:w-2/5 md:px-20',
-            'rounded-lg bg-gray-50',
-            'gap-6 px-6 py-10',
-          )}
-        >
+        <div className="flex flex-col justify-center gap-6 rounded-lg bg-gray-50 px-6 py-10 md:w-2/5 md:px-20">
+          <div className={styles.shape}></div>
           <p
-            className={cn(
-              `${lusitana.className}`,
-              'text-xl text-gray-800 antialiased',
-              'md:text-3xl md:leading-normal',
-            )}
+            className={`${lusitana.className} text-xl text-gray-800 antialiased md:text-3xl md:leading-normal`}
           >
-            <strong>What's your todo list for today?</strong>
+            <strong>Welcome to Acme.</strong> This is the example for the{' '}
+            <a href="https://nextjs.org/learn/" className="text-blue-500">
+              Next.js Learn Course
+            </a>
+            , brought to you by Vercel.
           </p>
-          <ul className={'list-disc'}>
-            <CreateListInput inputText={'Dentist Appointment at 1:30PM'} />
-            <CreateListInput inputText={'Grocery shop after work'} />
-          </ul>
           <Link
             href="/login"
             className="flex items-center gap-5 self-start rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base"
