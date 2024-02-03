@@ -17,6 +17,14 @@ const config: Config = {
           500: '#0070F3',
           600: '#2F6FEB',
         },
+        utilities: {
+          '.align-top': {
+            verticalAlign: 'top',
+          },
+          '.resize-both': {
+            resize: 'both',
+          },
+        },
       },
     },
     keyframes: {
