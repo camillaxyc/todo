@@ -53,7 +53,7 @@ export default function Page() {
                 'cursor-pointer hover:bg-blue-400',
               )}
             >
-              Add To-do's +
+              Add To-do&apos;s +
             </div>
           </ul>
           <Link
