@@ -40,11 +40,21 @@ export default function Page() {
               'md:text-3xl md:leading-normal',
             )}
           >
-            <strong>What's your todo list for today?</strong>
+            <strong>To-do list for Today</strong>
           </p>
           <ul className={'list-disc'}>
             <CreateListInput inputText={'Dentist Appointment at 1:30PM'} />
             <CreateListInput inputText={'Grocery shop after work'} />
+            <div
+              className={cn(
+                'text-center font-bold text-white',
+                'ml-3 p-2',
+                'rounded-lg bg-blue-500',
+                'cursor-pointer hover:bg-blue-400',
+              )}
+            >
+              Add To-do's +
+            </div>
           </ul>
           <Link
             href="/login"
