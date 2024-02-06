@@ -5,8 +5,9 @@ import styles from '@/app/ui/home.module.css';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Metadata } from 'next';
-import { CreateListInput } from './CreateListInput';
+import { ToDoList } from './TodoList';
 import cn from 'clsx';
+import { useState } from 'react';
 
 export const metadata: Metadata = {
   title: 'Acme Homepage',
@@ -27,8 +28,8 @@ export default function Page() {
       <div className="mt-4 flex grow flex-col gap-4 md:flex-row">
         <div
           className={cn(
-            'flex flex-col justify-between',
-            'md:w-2/5 md:px-20',
+            'flex flex-col',
+            'md:w-2/5 md:px-10',
             'rounded-lg bg-gray-50',
             'gap-6 px-6 py-10',
           )}
@@ -42,26 +43,13 @@ export default function Page() {
           >
             <strong>To-do list for Today</strong>
           </p>
-          <ul className={'list-disc'}>
-            <CreateListInput inputText={'Dentist Appointment at 1:30PM'} />
-            <CreateListInput inputText={'Grocery shop after work'} />
-            <div
-              className={cn(
-                'text-center font-bold text-white',
-                'ml-3 p-2',
-                'rounded-lg bg-blue-500',
-                'cursor-pointer hover:bg-blue-400',
-              )}
-            >
-              Add To-do&apos;s +
-            </div>
-          </ul>
-          <Link
+          <ToDoList />
+          {/* <Link
             href="/login"
             className="flex items-center gap-5 self-start rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base"
           >
             <span>Log in</span> <ArrowRightIcon className="w-5 md:w-6" />
-          </Link>
+          </Link> */}
         </div>
         <div className="flex items-center justify-center p-6 md:w-3/5 md:px-28 md:py-12">
           <Image
