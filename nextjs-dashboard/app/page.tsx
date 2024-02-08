@@ -10,7 +10,7 @@ import cn from 'clsx';
 import { useState } from 'react';
 
 export const metadata: Metadata = {
-  title: 'Acme Homepage',
+  title: 'Todo Homepage',
 };
 
 export default function Page() {

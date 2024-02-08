@@ -92,6 +92,7 @@ const CreateListInput: React.FC<CreateListInputProps> = ({
         setTodoTask={setTodoTask}
         todoTask={todoTask}
       />
+      <CheckBox />
       <textarea
         maxLength={100}
         ref={textAreaRef}
@@ -149,5 +150,24 @@ const DeleteTaskButton: React.FC<DeleteTaskButtontProps> = ({
     >
       x
     </button>
+  );
+};
+
+const CheckBox = () => {
+  const [checked, setChecked] = useState(false);
+  return (
+    <div
+      className={cn(
+        'ml-3 h-6 w-8',
+        'text-md bg-white text-center font-bold text-green-700',
+        'rounded-md border-2 border-solid border-blue-400',
+        'cursor-pointer border-2',
+      )}
+      onClick={() => {
+        setChecked(!checked);
+      }}
+    >
+      {checked ? '✔' : ''}
+    </div>
   );
 };
