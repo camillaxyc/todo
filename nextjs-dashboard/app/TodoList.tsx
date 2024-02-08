@@ -79,7 +79,7 @@ const CreateListInput: React.FC<CreateListInputProps> = ({
     updatedArray[index] = term;
     setTodoTask(updatedArray);
     console.log('upated after changing textarea ' + todoTask);
-  }, 300);
+  }, 800);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const autoExpand = (e: React.FormEvent<HTMLTextAreaElement>) => {
     e.currentTarget.style.height = 'auto';
@@ -101,7 +101,9 @@ const CreateListInput: React.FC<CreateListInputProps> = ({
         className={cn(
           'h-auto w-full',
           'resize-none overflow-hidden',
-          'border-transparent bg-gray-50 py-0 align-top',
+          'px-1 py-0',
+          'bg-gray-50  align-top',
+          'rounded-lg border-transparent focus:border-blue-400',
         )}
         onKeyDown={(e: KeyboardEvent<HTMLTextAreaElement>) => {
           if (e.key === 'Enter') {
@@ -111,7 +113,6 @@ const CreateListInput: React.FC<CreateListInputProps> = ({
           return false;
         }}
         onChange={(e) => handleTextArea(e.target.value)}
-        // rows={inputText.split('\n').length}
         onInput={(e) => autoExpand(e)}
       ></textarea>
     </li>
@@ -158,16 +159,16 @@ const CheckBox = () => {
   return (
     <div
       className={cn(
-        'ml-3 h-6 w-8',
-        'text-md bg-white text-center font-bold text-green-700',
+        'ml-3 mr-2 h-6 w-8',
+        'text-m text-center font-bold text-green-700',
         'rounded-md border-2 border-solid border-blue-400',
-        'cursor-pointer border-2',
+        'cursor-pointer',
       )}
       onClick={() => {
         setChecked(!checked);
       }}
     >
-      {checked ? '✔' : ''}
+      {checked ? <span className={cn('select-none')}>✔</span> : ''}
     </div>
   );
 };
