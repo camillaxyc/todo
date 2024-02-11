@@ -18,7 +18,7 @@ export const ToDoList = () => {
     return (
       <button
         className={cn(
-          'flex w-40 flex-row items-center',
+          'flex h-10 w-40 flex-row items-center',
           'text-center font-bold text-white',
           'ml-2',
           'rounded-lg bg-blue-500',
@@ -55,9 +55,9 @@ export const ToDoList = () => {
           />
         </div>
       ))}
-      <div className={cn('flex', 'gap-2')}>
+      <div className={cn('flex shrink-0 flex-row', 'gap-2')}>
         <AddListInput />
-        <SettingButton />
+        <Settings />
       </div>
     </ul>
   );
@@ -181,18 +181,54 @@ const CheckBox = () => {
   );
 };
 
-const SettingButton = () => {
+const Settings = () => {
   return (
-    <button
-      className={cn(
-        'flex h-10 w-40 flex-row items-center justify-center',
-        'text-center font-bold text-white',
-        'ml-2',
-        'rounded-lg bg-blue-500',
-        'cursor-pointer duration-100 hover:opacity-80',
-      )}
-    >
-      <span className={cn('')}>Settings</span>
-    </button>
+    <div className={cn('flex flex-col items-center justify-center', 'w-40')}>
+      <button
+        className={cn(
+          'shrink-2 flex h-10 w-40 flex-row items-center justify-center',
+          'text-center font-bold text-white',
+          'ml-2',
+          'rounded-lg bg-blue-500',
+          'cursor-pointer duration-100 hover:opacity-80',
+        )}
+      >
+        <span className={cn('')}>Settings</span>
+      </button>
+      <div
+        className={cn(
+          'flex flex-col items-center justify-center',
+          'w-40 gap-2',
+        )}
+      >
+        <a
+          className={cn(
+            'flex flex-col items-center justify-center',
+            'w-40 gap-2',
+          )}
+          href="#"
+        >
+          Checkbox
+        </a>
+        <a
+          className={cn(
+            'flex flex-col items-center justify-center',
+            'w-40 gap-2',
+          )}
+          href="#"
+        >
+          Text Color
+        </a>
+        <a
+          className={cn(
+            'flex flex-col items-center justify-center',
+            'w-40 gap-2',
+          )}
+          href="#"
+        >
+          Text Size
+        </a>
+      </div>
+    </div>
   );
 };
