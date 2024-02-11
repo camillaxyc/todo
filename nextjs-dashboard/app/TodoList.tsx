@@ -55,7 +55,10 @@ export const ToDoList = () => {
           />
         </div>
       ))}
-      <AddListInput />
+      <div className={cn('flex', 'gap-2')}>
+        <AddListInput />
+        <SettingButton />
+      </div>
     </ul>
   );
 };
@@ -73,17 +76,22 @@ const CreateListInput: React.FC<CreateListInputProps> = ({
   todoTask,
   setTodoTask,
 }) => {
-  const handleTextArea = useDebouncedCallback((term) => {
-    console.log(`Changing to-do list here: ${term}`);
-    const updatedArray = [...todoTask];
-    updatedArray[index] = term;
-    setTodoTask(updatedArray);
-    console.log('upated after changing textarea ' + todoTask);
-  }, 800);
+  // const handleTextArea = useDebouncedCallback((term) => {
+  //   console.log(`Changing to-do list here: ${term}`);
+  //   const updatedArray = [...todoTask];
+  //   updatedArray[index] = term;
+  //   setTodoTask(updatedArray);
+  //   console.log('upated after changing textarea ' + todoTask);
+  // }, 800);
+
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const autoExpand = (e: React.FormEvent<HTMLTextAreaElement>) => {
     e.currentTarget.style.height = 'auto';
     e.currentTarget.style.height = e.currentTarget.scrollHeight + 'px';
+    console.log('current scrollheight' + e.currentTarget.style.height);
+    console.log(
+      'autoExpand current target value is this' + e.currentTarget.value,
+    );
   };
   return (
     <li className={cn('my-4 flex')}>
@@ -99,10 +107,10 @@ const CreateListInput: React.FC<CreateListInputProps> = ({
         defaultValue={inputText}
         placeholder={'Enter a todo'}
         className={cn(
-          'h-auto w-full',
+          'w-4/5',
           'resize-none overflow-hidden',
           'px-1 py-0',
-          'bg-gray-50  align-top',
+          'bg-gray-50 align-top',
           'rounded-lg border-transparent focus:border-blue-400',
         )}
         onKeyDown={(e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -112,7 +120,7 @@ const CreateListInput: React.FC<CreateListInputProps> = ({
           }
           return false;
         }}
-        onChange={(e) => handleTextArea(e.target.value)}
+        // onChange={(e) => handleTextArea(e.target.value)}
         onInput={(e) => autoExpand(e)}
       ></textarea>
     </li>
@@ -121,8 +129,8 @@ const CreateListInput: React.FC<CreateListInputProps> = ({
 
 interface DeleteTaskButtontProps {
   index?: number;
-  todoTask: string[]; // Assuming Component is the correct type
-  setTodoTask: React.Dispatch<React.SetStateAction<string[]>>; // Assuming Component is the correct type
+  todoTask: string[];
+  setTodoTask: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 //DeleteTaskButton
@@ -140,7 +148,7 @@ const DeleteTaskButton: React.FC<DeleteTaskButtontProps> = ({
   return (
     <button
       className={cn(
-        'ml-3 h-6 w-8',
+        'ml-3 h-6 w-6',
         'font-bold text-white',
         'rounded-md border-solid bg-red-500',
         'hover:bg-red-700',
@@ -159,7 +167,7 @@ const CheckBox = () => {
   return (
     <div
       className={cn(
-        'ml-3 mr-2 h-6 w-8',
+        'ml-3 mr-2 h-6 w-6',
         'text-m text-center font-bold text-green-700',
         'rounded-md border-2 border-solid border-blue-400',
         'cursor-pointer',
@@ -170,5 +178,21 @@ const CheckBox = () => {
     >
       {checked ? <span className={cn('select-none')}>✔</span> : ''}
     </div>
+  );
+};
+
+const SettingButton = () => {
+  return (
+    <button
+      className={cn(
+        'flex h-10 w-40 flex-row items-center justify-center',
+        'text-center font-bold text-white',
+        'ml-2',
+        'rounded-lg bg-blue-500',
+        'cursor-pointer duration-100 hover:opacity-80',
+      )}
+    >
+      <span className={cn('')}>Settings</span>
+    </button>
   );
 };
