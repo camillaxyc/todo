@@ -182,53 +182,45 @@ const CheckBox = () => {
 };
 
 const Settings = () => {
+  const [isDropDown, setIsDropDown] = useState(false);
   return (
-    <div className={cn('flex flex-col items-center justify-center', 'w-40')}>
+    <div
+      className={cn(
+        'flex flex-col items-center justify-center',
+        'ml-2 w-40',
+        'bg-white',
+        'rounded-lg border-2 border-blue-500',
+      )}
+    >
       <button
         className={cn(
           'shrink-2 flex h-10 w-40 flex-row items-center justify-center',
           'text-center font-bold text-white',
-          'ml-2',
           'rounded-lg bg-blue-500',
           'cursor-pointer duration-100 hover:opacity-80',
         )}
+        onClick={() => {
+          setIsDropDown(!isDropDown);
+        }}
       >
         <span className={cn('')}>Settings</span>
       </button>
       <div
         className={cn(
-          'flex flex-col items-center justify-center',
+          `${
+            isDropDown ? 'flex' : 'hidden'
+          } flex-col items-center justify-center`,
           'w-40 gap-2',
         )}
       >
-        <a
-          className={cn(
-            'flex flex-col items-center justify-center',
-            'w-40 gap-2',
-          )}
-          href="#"
-        >
-          Checkbox
-        </a>
-        <a
-          className={cn(
-            'flex flex-col items-center justify-center',
-            'w-40 gap-2',
-          )}
-          href="#"
-        >
-          Text Color
-        </a>
-        <a
-          className={cn(
-            'flex flex-col items-center justify-center',
-            'w-40 gap-2',
-          )}
-          href="#"
-        >
-          Text Size
-        </a>
+        <a href="#">Checkbox</a>
+        <a href="#">Text Color</a>
+        <a href="#">Text Size</a>
       </div>
     </div>
   );
+};
+
+const SettingsDropDownOption = ({ dropDownText = '' }) => {
+  <a href="#">{dropDownText}</a>;
 };
