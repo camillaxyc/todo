@@ -48,39 +48,58 @@ export const ToDoList = () => {
 
   const Settings = () => {
     const [isDropDown, setIsDropDown] = useState(false);
+    const [popUpSetting, setPopUpSetting] = useState(false);
     return (
-      <div
-        className={cn(
-          'flex flex-col items-center justify-center',
-          'ml-2 w-40',
-          'bg-white',
-          'rounded-lg border-2 border-blue-500',
-        )}
-      >
-        <button
-          className={cn(
-            'shrink-2 flex h-10 w-40 flex-row items-center justify-center',
-            'text-center font-bold text-white',
-            'rounded-lg bg-blue-500',
-            'cursor-pointer duration-100 hover:opacity-80',
-          )}
-          onClick={() => {
-            setIsDropDown(!isDropDown);
-          }}
-        >
-          <span className={cn('')}>Settings</span>
-        </button>
+      <div>
         <div
           className={cn(
-            `${
-              isDropDown ? 'flex' : 'hidden'
-            } flex-col items-center justify-center`,
-            'w-40',
+            'flex flex-col items-center justify-center',
+            'ml-2 w-40',
+            'bg-white',
+            'rounded-lg border-2 border-blue-500',
           )}
         >
-          <SettingsDropDownOption dropDownText={'Checkbox'} />
-          <SettingsDropDownOption dropDownText={'Text Color'} />
-          <SettingsDropDownOption dropDownText={'Text Size'} />
+          <button
+            className={cn(
+              'shrink-2 flex h-10 w-40 flex-row items-center justify-center',
+              'text-center font-bold text-white',
+              'rounded-lg bg-blue-500',
+              'cursor-pointer duration-100 hover:opacity-80',
+            )}
+            onClick={() => {
+              setIsDropDown(!isDropDown);
+            }}
+          >
+            <span className={cn('')}>Settings</span>
+          </button>
+          <div
+            className={cn(
+              `${
+                isDropDown ? 'flex' : 'hidden'
+              } flex-col items-center justify-center`,
+              'w-40',
+            )}
+          >
+            {popUpSetting ? (
+              <SettingsPopUp />
+            ) : (
+              <>
+                {' '}
+                <SettingsDropDownOption
+                  dropDownText={'Checkbox'}
+                  setPopUpSetting={setPopUpSetting}
+                />
+                <SettingsDropDownOption
+                  dropDownText={'Text Color'}
+                  setPopUpSetting={setPopUpSetting}
+                />
+                <SettingsDropDownOption
+                  dropDownText={'Text Size'}
+                  setPopUpSetting={setPopUpSetting}
+                />
+              </>
+            )}
+          </div>
         </div>
       </div>
     );
@@ -106,7 +125,10 @@ export const ToDoList = () => {
   );
 };
 
-const SettingsDropDownOption = ({ dropDownText = '' }) => {
+const SettingsDropDownOption = ({
+  dropDownText = '',
+  setPopUpSetting = function (boolean: boolean) {},
+}) => {
   return (
     <button
       className={cn(
@@ -115,9 +137,30 @@ const SettingsDropDownOption = ({ dropDownText = '' }) => {
         'overflow-hidden',
         'rounded-lg hover:bg-blue-100',
       )}
+      onClick={() => {
+        setPopUpSetting(!false);
+      }}
     >
       {dropDownText}
     </button>
+  );
+};
+
+const SettingsPopUp = () => {
+  return (
+    <div
+      className={cn(
+        'relative',
+        'w-36',
+        'shrink-2',
+        'overflow-hidden',
+        'rounded-lg',
+      )}
+    >
+      <SettingsDropDownOption dropDownText={'Black'} />
+      <SettingsDropDownOption dropDownText={'Red'} />
+      <SettingsDropDownOption dropDownText={'Blue'} />
+    </div>
   );
 };
 
