@@ -10,6 +10,8 @@ export const ToDoList = () => {
     'Grocery shop after work',
   ]);
 
+  const [fontSize, setFontSize] = useState('text-md');
+
   const AddListInput = () => {
     const AddTask = () => {
       setTodoTask((prevTasks) => [...prevTasks, 'Enter New Task Here']);
@@ -43,19 +45,60 @@ export const ToDoList = () => {
       </button>
     );
   };
+
+  const Settings = () => {
+    const [isDropDown, setIsDropDown] = useState(false);
+    return (
+      <div
+        className={cn(
+          'flex flex-col items-center justify-center',
+          'ml-2 w-40',
+          'bg-white',
+          'rounded-lg border-2 border-blue-500',
+        )}
+      >
+        <button
+          className={cn(
+            'shrink-2 flex h-10 w-40 flex-row items-center justify-center',
+            'text-center font-bold text-white',
+            'rounded-lg bg-blue-500',
+            'cursor-pointer duration-100 hover:opacity-80',
+          )}
+          onClick={() => {
+            setIsDropDown(!isDropDown);
+          }}
+        >
+          <span className={cn('')}>Settings</span>
+        </button>
+        <div
+          className={cn(
+            `${
+              isDropDown ? 'flex' : 'hidden'
+            } flex-col items-center justify-center`,
+            'w-40',
+          )}
+        >
+          <SettingsDropDownOption dropDownText={'Checkbox'} />
+          <SettingsDropDownOption dropDownText={'Text Color'} />
+          <SettingsDropDownOption dropDownText={'Text Size'} />
+        </div>
+      </div>
+    );
+  };
   return (
     <ul className={'list-disc'}>
       {todoTask.map((task, index) => (
         <div key={task + index}>
           <CreateListInput
             inputText={task}
+            fontSize={fontSize}
             index={index}
             todoTask={todoTask}
             setTodoTask={setTodoTask}
           />
         </div>
       ))}
-      <div className={cn('flex shrink-0 flex-row', 'gap-2')}>
+      <div className={cn('flex shrink-0 flex-row')}>
         <AddListInput />
         <Settings />
       </div>
@@ -63,8 +106,24 @@ export const ToDoList = () => {
   );
 };
 
+const SettingsDropDownOption = ({ dropDownText = '' }) => {
+  return (
+    <button
+      className={cn(
+        'w-36',
+        'shrink-2 my-1 p-1',
+        'overflow-hidden',
+        'rounded-lg hover:bg-blue-100',
+      )}
+    >
+      {dropDownText}
+    </button>
+  );
+};
+
 interface CreateListInputProps {
   inputText?: string;
+  fontSize?: string;
   index?: number;
   todoTask: string[];
   setTodoTask: React.Dispatch<React.SetStateAction<string[]>>;
@@ -72,6 +131,7 @@ interface CreateListInputProps {
 
 const CreateListInput: React.FC<CreateListInputProps> = ({
   inputText = '',
+  fontSize = '',
   index = 0,
   todoTask,
   setTodoTask,
@@ -107,7 +167,7 @@ const CreateListInput: React.FC<CreateListInputProps> = ({
         defaultValue={inputText}
         placeholder={'Enter a todo'}
         className={cn(
-          'w-4/5',
+          `${fontSize} w-4/5`,
           'resize-none overflow-hidden',
           'px-1 py-0',
           'bg-gray-50 align-top',
@@ -179,48 +239,4 @@ const CheckBox = () => {
       {checked ? <span className={cn('select-none')}>✔</span> : ''}
     </div>
   );
-};
-
-const Settings = () => {
-  const [isDropDown, setIsDropDown] = useState(false);
-  return (
-    <div
-      className={cn(
-        'flex flex-col items-center justify-center',
-        'ml-2 w-40',
-        'bg-white',
-        'rounded-lg border-2 border-blue-500',
-      )}
-    >
-      <button
-        className={cn(
-          'shrink-2 flex h-10 w-40 flex-row items-center justify-center',
-          'text-center font-bold text-white',
-          'rounded-lg bg-blue-500',
-          'cursor-pointer duration-100 hover:opacity-80',
-        )}
-        onClick={() => {
-          setIsDropDown(!isDropDown);
-        }}
-      >
-        <span className={cn('')}>Settings</span>
-      </button>
-      <div
-        className={cn(
-          `${
-            isDropDown ? 'flex' : 'hidden'
-          } flex-col items-center justify-center`,
-          'w-40 gap-2',
-        )}
-      >
-        <a href="#">Checkbox</a>
-        <a href="#">Text Color</a>
-        <a href="#">Text Size</a>
-      </div>
-    </div>
-  );
-};
-
-const SettingsDropDownOption = ({ dropDownText = '' }) => {
-  <a href="#">{dropDownText}</a>;
 };
