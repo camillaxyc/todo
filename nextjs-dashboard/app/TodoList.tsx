@@ -3,6 +3,7 @@
 import { KeyboardEvent, useRef, useState } from 'react';
 import cn from 'clsx';
 import { useDebouncedCallback } from 'use-debounce';
+import { isBooleanObject } from 'util/types';
 
 export const ToDoList = () => {
   const [todoTask, setTodoTask] = useState([
@@ -81,21 +82,39 @@ export const ToDoList = () => {
             )}
           >
             {popUpSetting ? (
-              <SettingsPopUp />
+              <>
+                <SettingsDropDownOption
+                  dropDownText={'Red'}
+                  setPopUpSetting={setPopUpSetting}
+                  popUpSetting={popUpSetting}
+                />
+                <SettingsDropDownOption
+                  dropDownText={'Black'}
+                  setPopUpSetting={setPopUpSetting}
+                  popUpSetting={popUpSetting}
+                />
+                <SettingsDropDownOption
+                  dropDownText={'Blue'}
+                  setPopUpSetting={setPopUpSetting}
+                  popUpSetting={popUpSetting}
+                />
+              </>
             ) : (
               <>
-                {' '}
                 <SettingsDropDownOption
                   dropDownText={'Checkbox'}
                   setPopUpSetting={setPopUpSetting}
+                  popUpSetting={popUpSetting}
                 />
                 <SettingsDropDownOption
                   dropDownText={'Text Color'}
                   setPopUpSetting={setPopUpSetting}
+                  popUpSetting={popUpSetting}
                 />
                 <SettingsDropDownOption
                   dropDownText={'Text Size'}
                   setPopUpSetting={setPopUpSetting}
+                  popUpSetting={popUpSetting}
                 />
               </>
             )}
@@ -127,6 +146,7 @@ export const ToDoList = () => {
 
 const SettingsDropDownOption = ({
   dropDownText = '',
+  popUpSetting = true,
   setPopUpSetting = function (boolean: boolean) {},
 }) => {
   return (
@@ -138,7 +158,7 @@ const SettingsDropDownOption = ({
         'rounded-lg hover:bg-blue-100',
       )}
       onClick={() => {
-        setPopUpSetting(!false);
+        setPopUpSetting(!popUpSetting);
       }}
     >
       {dropDownText}
@@ -146,7 +166,9 @@ const SettingsDropDownOption = ({
   );
 };
 
-const SettingsPopUp = () => {
+const SettingsPopUp = ({
+  setPopUpSetting = function (boolean: boolean) {},
+}) => {
   return (
     <div
       className={cn(
@@ -157,9 +179,18 @@ const SettingsPopUp = () => {
         'rounded-lg',
       )}
     >
-      <SettingsDropDownOption dropDownText={'Black'} />
-      <SettingsDropDownOption dropDownText={'Red'} />
-      <SettingsDropDownOption dropDownText={'Blue'} />
+      <SettingsDropDownOption
+        dropDownText={'Black'}
+        setPopUpSetting={setPopUpSetting}
+      />
+      <SettingsDropDownOption
+        dropDownText={'Red'}
+        setPopUpSetting={setPopUpSetting}
+      />
+      <SettingsDropDownOption
+        dropDownText={'Blue'}
+        setPopUpSetting={setPopUpSetting}
+      />
     </div>
   );
 };
