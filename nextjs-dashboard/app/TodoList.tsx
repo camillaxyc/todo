@@ -1,9 +1,8 @@
 'use client';
 
-import { KeyboardEvent, useRef, useState } from 'react';
+import { KeyboardEvent, useRef, useState, useEffect } from 'react';
 import cn from 'clsx';
 import { useDebouncedCallback } from 'use-debounce';
-import { isBooleanObject } from 'util/types';
 
 export const ToDoList = () => {
   const [todoTask, setTodoTask] = useState([
@@ -11,7 +10,48 @@ export const ToDoList = () => {
     'Grocery shop after work',
   ]);
 
-  const [fontSize, setFontSize] = useState('text-md');
+  interface ColorObject {
+    Red: string;
+    Black: string;
+    Blue: string;
+  }
+
+  interface SizeObject {
+    Small: string;
+    Medium: string;
+    Large: string;
+  }
+
+  const [fontSize, setFontSize] = useState('Medium');
+  const [fontColor, setFontColor] = useState('Black');
+  const [checkbox, setCheckbox] = useState('Checkbox');
+  const [StyleSelected, setStyleSelected] = useState('default');
+  const textColorOption = ['Red', 'Black', 'Blue'];
+  const textSizeOption = ['Small', 'Medium', 'Large'];
+  const checkBoxOption = ['Strike', 'Checkbox', 'Both'];
+
+  const [mappedData, setMappedData] = useState([
+    checkBoxOption,
+    textColorOption,
+    textSizeOption,
+  ]);
+
+  const [currentOption, setCurrentOption] = useState([
+    checkbox,
+    fontColor,
+    fontSize,
+  ]);
+
+  const settingStyleChange = [
+    {
+      Color: {
+        Red: 'text-red-700',
+        Black: 'text-black',
+        Blue: 'text-blue-700',
+      },
+    },
+    { Size: { Small: 'text-sm', Medium: 'text-md', Large: 'text-lg' } },
+  ];
 
   const AddListInput = () => {
     const AddTask = () => {
@@ -32,13 +72,7 @@ export const ToDoList = () => {
         }}
       >
         <div
-          className={cn(
-            'text-2xl',
-            'px-3 py-1',
-            'rounded-lg',
-            'bg-blue-400',
-            // 'cursor-pointer hover:bg-blue-400',
-          )}
+          className={cn('text-2xl', 'px-3 py-1', 'rounded-lg', 'bg-blue-400')}
         >
           +
         </div>
@@ -50,6 +84,12 @@ export const ToDoList = () => {
   const Settings = () => {
     const [isDropDown, setIsDropDown] = useState(false);
     const [popUpSetting, setPopUpSetting] = useState(false);
+    const [selectedIndex, setSelectedIndex] = useState(0);
+
+    useEffect(() => {
+      console.log('popUpSetting changed:', popUpSetting);
+    }, [popUpSetting]);
+
     return (
       <div>
         <div
@@ -69,6 +109,7 @@ export const ToDoList = () => {
             )}
             onClick={() => {
               setIsDropDown(!isDropDown);
+              setPopUpSetting(false);
             }}
           >
             <span className={cn('')}>Settings</span>
@@ -83,38 +124,60 @@ export const ToDoList = () => {
           >
             {popUpSetting ? (
               <>
-                <SettingsDropDownOption
-                  dropDownText={'Red'}
-                  setPopUpSetting={setPopUpSetting}
-                  popUpSetting={popUpSetting}
-                />
-                <SettingsDropDownOption
-                  dropDownText={'Black'}
-                  setPopUpSetting={setPopUpSetting}
-                  popUpSetting={popUpSetting}
-                />
-                <SettingsDropDownOption
-                  dropDownText={'Blue'}
-                  setPopUpSetting={setPopUpSetting}
-                  popUpSetting={popUpSetting}
-                />
+                {mappedData[selectedIndex].map((item, index) => (
+                  <div key={index + item}>
+                    <SettingsDropDownOption
+                      currentOption={currentOption[selectedIndex]}
+                      key={index + item}
+                      dropDownText={item}
+                      onClick={() => {
+                        setPopUpSetting(!popUpSetting);
+                        setStyleSelected(item);
+                        setCurrentOption([item, fontColor, fontSize]);
+                        if (selectedIndex === 0) {
+                          setCheckbox(item);
+                        } else if (selectedIndex === 1) {
+                          setFontColor(item);
+                          setCurrentOption([checkbox, item, fontSize]);
+                        } else if (selectedIndex === 2) {
+                          setFontSize(item);
+                          setCurrentOption([checkbox, fontColor, item]);
+                          console.log(
+                            settingStyleChange[1].Size?.[
+                              fontSize as keyof SizeObject
+                            ],
+                          );
+                        }
+                        // const [fontSize, setFontSize] = useState('text-md');
+                        // const [fontColor, setFontColor] = useState('black');
+                        // const [checkbox, setCheckbox] = useState('checkbox');
+                      }}
+                    />
+                  </div>
+                ))}
               </>
             ) : (
               <>
                 <SettingsDropDownOption
                   dropDownText={'Checkbox'}
-                  setPopUpSetting={setPopUpSetting}
-                  popUpSetting={popUpSetting}
+                  onClick={() => {
+                    setPopUpSetting(!popUpSetting);
+                    setSelectedIndex(0);
+                  }}
                 />
                 <SettingsDropDownOption
                   dropDownText={'Text Color'}
-                  setPopUpSetting={setPopUpSetting}
-                  popUpSetting={popUpSetting}
+                  onClick={() => {
+                    setPopUpSetting(!popUpSetting);
+                    setSelectedIndex(1);
+                  }}
                 />
                 <SettingsDropDownOption
                   dropDownText={'Text Size'}
-                  setPopUpSetting={setPopUpSetting}
-                  popUpSetting={popUpSetting}
+                  onClick={() => {
+                    setPopUpSetting(!popUpSetting);
+                    setSelectedIndex(2);
+                  }}
                 />
               </>
             )}
@@ -126,13 +189,21 @@ export const ToDoList = () => {
   return (
     <ul className={'list-disc'}>
       {todoTask.map((task, index) => (
-        <div key={task + index}>
+        <div
+          key={task + index}
+          className={cn(
+            `${settingStyleChange[0].Color?.[fontColor as keyof ColorObject]}`,
+          )}
+        >
           <CreateListInput
             inputText={task}
-            fontSize={fontSize}
+            textSize={
+              settingStyleChange[1].Size?.[fontSize as keyof SizeObject]
+            }
             index={index}
             todoTask={todoTask}
             setTodoTask={setTodoTask}
+            checkbox={checkbox}
           />
         </div>
       ))}
@@ -146,8 +217,8 @@ export const ToDoList = () => {
 
 const SettingsDropDownOption = ({
   dropDownText = '',
-  popUpSetting = true,
-  setPopUpSetting = function (boolean: boolean) {},
+  currentOption = '',
+  onClick = () => {},
 }) => {
   return (
     <button
@@ -158,54 +229,33 @@ const SettingsDropDownOption = ({
         'rounded-lg hover:bg-blue-100',
       )}
       onClick={() => {
-        setPopUpSetting(!popUpSetting);
+        onClick();
       }}
     >
-      {dropDownText}
+      {dropDownText === currentOption ? (
+        <div className={cn('just ml-6 flex flex-row justify-center')}>
+          {dropDownText} <div className={cn('ml-2')}>✔</div>
+        </div>
+      ) : (
+        dropDownText
+      )}
     </button>
   );
 };
 
-const SettingsPopUp = ({
-  setPopUpSetting = function (boolean: boolean) {},
-}) => {
-  return (
-    <div
-      className={cn(
-        'relative',
-        'w-36',
-        'shrink-2',
-        'overflow-hidden',
-        'rounded-lg',
-      )}
-    >
-      <SettingsDropDownOption
-        dropDownText={'Black'}
-        setPopUpSetting={setPopUpSetting}
-      />
-      <SettingsDropDownOption
-        dropDownText={'Red'}
-        setPopUpSetting={setPopUpSetting}
-      />
-      <SettingsDropDownOption
-        dropDownText={'Blue'}
-        setPopUpSetting={setPopUpSetting}
-      />
-    </div>
-  );
-};
-
 interface CreateListInputProps {
+  checkbox?: string;
   inputText?: string;
-  fontSize?: string;
+  textSize?: string;
   index?: number;
   todoTask: string[];
   setTodoTask: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const CreateListInput: React.FC<CreateListInputProps> = ({
+  checkbox = '',
   inputText = '',
-  fontSize = '',
+  textSize = '',
   index = 0,
   todoTask,
   setTodoTask,
@@ -219,6 +269,7 @@ const CreateListInput: React.FC<CreateListInputProps> = ({
   // }, 800);
 
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const [checked, setChecked] = useState(false);
   const autoExpand = (e: React.FormEvent<HTMLTextAreaElement>) => {
     e.currentTarget.style.height = 'auto';
     e.currentTarget.style.height = e.currentTarget.scrollHeight + 'px';
@@ -227,6 +278,43 @@ const CreateListInput: React.FC<CreateListInputProps> = ({
       'autoExpand current target value is this' + e.currentTarget.value,
     );
   };
+
+  const StrikePencil = () => {
+    return (
+      <div
+        className={cn(
+          'ml-3 mr-2 h-6 w-6',
+          'text-m text-center font-bold text-green-700',
+          'rounded-md border-2 border-transparent',
+          'cursor-pointer',
+        )}
+        onClick={() => {
+          setChecked(!checked);
+        }}
+      >
+        ✏️
+      </div>
+    );
+  };
+
+  const CheckBox = () => {
+    return (
+      <div
+        className={cn(
+          'ml-3 mr-2 h-6 w-6',
+          'text-m text-center font-bold text-green-700',
+          'rounded-md border-2 border-solid border-blue-400',
+          'cursor-pointer',
+        )}
+        onClick={() => {
+          setChecked(!checked);
+        }}
+      >
+        {checked ? <span className={cn('select-none')}>✔</span> : ''}
+      </div>
+    );
+  };
+
   return (
     <li className={cn('my-4 flex')}>
       <DeleteTaskButton
@@ -234,14 +322,16 @@ const CreateListInput: React.FC<CreateListInputProps> = ({
         setTodoTask={setTodoTask}
         todoTask={todoTask}
       />
-      <CheckBox />
+      {checkbox === 'Strike' ? <StrikePencil /> : <CheckBox />}
       <textarea
         maxLength={100}
         ref={textAreaRef}
         defaultValue={inputText}
         placeholder={'Enter a todo'}
         className={cn(
-          `${fontSize} w-4/5`,
+          `${textSize}`,
+          `${checked && checkbox !== 'Checkbox' ? 'line-through' : ''}`,
+          `w-4/5`,
           'resize-none overflow-hidden',
           'px-1 py-0',
           'bg-gray-50 align-top',
@@ -293,24 +383,5 @@ const DeleteTaskButton: React.FC<DeleteTaskButtontProps> = ({
     >
       x
     </button>
-  );
-};
-
-const CheckBox = () => {
-  const [checked, setChecked] = useState(false);
-  return (
-    <div
-      className={cn(
-        'ml-3 mr-2 h-6 w-6',
-        'text-m text-center font-bold text-green-700',
-        'rounded-md border-2 border-solid border-blue-400',
-        'cursor-pointer',
-      )}
-      onClick={() => {
-        setChecked(!checked);
-      }}
-    >
-      {checked ? <span className={cn('select-none')}>✔</span> : ''}
-    </div>
   );
 };
